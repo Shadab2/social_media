@@ -23,7 +23,7 @@ mongoose.connect(
   }
 );
 
-const PORT = 3000 | process.env.PORT;
+const PORT = 8000 | process.env.PORT;
 
 //middlewares
 app.use(express.json());
