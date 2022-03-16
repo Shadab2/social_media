@@ -70,8 +70,13 @@
   height: 24px;
   margin-right: 5px;
   cursor: pointer;
+  padding: 4px 0px;
 }
 
+.likedImg {
+  transform: scale(1.05);
+  border-bottom: 1px solid rgb(43, 43, 219);
+}
 .postLikeCounter {
   font-size: 15px;
 }

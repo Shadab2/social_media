@@ -11,6 +11,9 @@ import {
   School,
 } from "@material-ui/icons";
 
+import { Users } from "../../DummyData";
+import CloseFriends from "../CloseFriends/CloseFriends";
+
 export default function Sidebar() {
   return (
     <div className="sidebar">
@@ -56,14 +59,9 @@ export default function Sidebar() {
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {[...Array(10)].map((_, id) => {
-            return (
-              <li className="sidebarFreind" key={id}>
-                <img src="/assets/images/person/1.jpeg" alt="" />
-                <span>Robert Downey</span>
-              </li>
-            );
-          })}
+          {Users.map((user) => (
+            <CloseFriends user={user} key={user.id} />
+          ))}
         </ul>
       </div>
     </div>
