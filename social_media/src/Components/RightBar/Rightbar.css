@@ -44,6 +44,33 @@
   margin-bottom: 10px;
 }
 
+.rightbarProfileImgContainer {
+  position: relative;
+}
+
+.rightbarFriend {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.rightbarProfileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+.rightbarOnline {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  top: 0px;
+  right: 5px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: limegreen;
+}
 .rightbarInfo {
   margin-bottom: 30px;
 }

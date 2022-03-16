@@ -49,6 +49,11 @@
   object-fit: contain;
 }
 
+.postText {
+  text-align: left;
+  font-weight: 400;
+}
+
 .postBottom {
   display: flex;
   align-items: center;
