@@ -1,13 +1,25 @@
 import "./Post.css";
 import { useEffect, useState } from "react";
 import { MoreVert } from "@material-ui/icons";
-import { Users } from "../../DummyData";
+import axios from "axios";
+import { format } from "timeago.js";
 
 export default function Post({ post }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const [liked, setLiked] = useState(0);
-  const user = Users[1];
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`/users/${post.userId}`);
+        setUser(res.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchUser();
+  }, [post.userId]);
 
   const handleLiked = () => {
     setLiked((prev) => 1 - prev);
@@ -19,12 +31,12 @@ export default function Post({ post }) {
         <div className="postTop">
           <div className="postTopLeft">
             <img
-              src={`${PF}/${user.profilePicture}`}
+              src={user.profilePicture || `${PF}/person/noAvatar.png`}
               alt=""
               className="postProfileImg"
             />
-            <span className="postUsername">Robert </span>
-            <span className="postDate">12 January 2021</span>
+            <span className="postUsername">{user.username} </span>
+            <span className="postDate">{format(post.createdAt)}</span>
           </div>
           <div className="postTopRight">
             <MoreVert />
@@ -49,11 +61,11 @@ export default function Post({ post }) {
               onClick={handleLiked}
             />
             <span className="postLikeCounter">{`${
-              post.like + liked
+              post.likes.length + liked
             } people liked this`}</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">{`${post.comment} comments`}</span>
+            <span className="postCommentText">5 commnets</span>
           </div>
         </div>
       </div>
