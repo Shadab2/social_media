@@ -17,7 +17,6 @@ function Login() {
       dispatch
     );
   };
-  if (user) return <Navigate to="/" replace />;
   return (
     <div className="login">
       <div className="loginWrapper">

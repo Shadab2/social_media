@@ -8,9 +8,6 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 
 function Home() {
-  const { user } = useContext(AuthContext);
-  console.log(user);
-  if (!user) return <Navigate to="/login" />;
   return (
     <>
       <Topbar />
