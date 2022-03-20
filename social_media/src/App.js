@@ -5,17 +5,25 @@ import Register from "./Pages/Register/Register";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { user } = useContext(AuthContext);
-  console.log({ user });
   return (
     <div className="App">
       <Routes>
-        <Route path="/*" element={user ? <Home /> : <Navigate to="/login" />} />
-        <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/" element={<ProtectedRoute />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to="/" replace />}
+        />
       </Routes>
     </div>
   );

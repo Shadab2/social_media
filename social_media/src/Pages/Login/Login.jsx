@@ -2,14 +2,13 @@ import React, { useContext, useRef } from "react";
 import { LoginCall } from "../../ApiCalls";
 import { AuthContext } from "../../Context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
   const email = useRef();
   const password = useRef();
   const { user, isFetching, error, dispatch } = useContext(AuthContext);
-  console.log({ user });
   const handleSubmit = async (e) => {
     e.preventDefault();
     LoginCall(
@@ -49,13 +48,13 @@ function Login() {
               )}
             </button>
             <span className="loginForgot">Forgot Password?</span>
-            <button className="loginRegisterButton">
+            <Link className="loginRegisterButton" to="/register">
               {isFetching ? (
                 <CircularProgress size="20px" color="secondary" />
               ) : (
                 "REGISTER"
               )}
-            </button>
+            </Link>
           </form>
         </div>
       </div>
