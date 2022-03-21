@@ -47,21 +47,19 @@ router.delete("/:id", async (req, res) => {
 //like or dislike a post
 router.put("/:id/like", async (req, res) => {
   try {
+    console.log(req.body.userId);
     const post = await Post.findById(req.params.id);
-    if (!post) return res.status(404).send("No such post");
     if (!post.likes.includes(req.body.userId)) {
       await post.updateOne({ $push: { likes: req.body.userId } });
-      res.status(200).send("post has been liked");
+      res.status(200).json("The post has been liked");
     } else {
-      await post.updateOne({ $push: { likes: req.body.userId } });
-      res.status(200).send("post has been disliked");
+      await post.updateOne({ $pull: { likes: req.body.userId } });
+      res.status(200).json("The post has been disliked");
     }
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({});
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
-
 //get a post
 router.get("/:id", async (req, res) => {
   try {
