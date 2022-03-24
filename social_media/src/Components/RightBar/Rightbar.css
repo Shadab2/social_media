@@ -77,6 +77,8 @@
 
 .rightbarFollowing {
   display: flex;
+  text-decoration: none;
+  color: black;
   flex-direction: column;
   margin-bottom: 20px;
   cursor: pointer;

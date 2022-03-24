@@ -12,7 +12,6 @@ function Feed() {
     const fetchPosts = async () => {
       try {
         const res = await axios.get(`/posts/timeline/all/${user._id}`);
-        console.log(res.data);
         setPosts(res.data);
       } catch (e) {
         console.log(e);

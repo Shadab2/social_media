@@ -42,7 +42,7 @@ export default function Topbar() {
             <span className="topbarIconBadge">1</span>
           </div>
         </div>
-        <Link style={{ textDecoration: "none" }} to="/profile">
+        <Link style={{ textDecoration: "none" }} to={`/profile/${user._id}`}>
           <img
             src={user.profilePicture || `${PF}/person/noAvatar.png`}
             alt=""

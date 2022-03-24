@@ -5,20 +5,23 @@ import Feed from "../../Components/Feed/Feed";
 import RightBar from "../../Components/RightBar/RightBar";
 import axios from "axios";
 import "./Profile.css";
+import { useParams } from "react-router-dom";
+
 function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const { userId } = useParams();
   const [user, setUser] = useState({});
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`/users/623244caa02835556588f5b1`);
+        const res = await axios.get(`/users/profile/${userId}`);
         setUser(res.data);
       } catch (e) {
         console.log(e);
       }
     };
     fetchUser();
-  }, []);
+  }, [userId]);
 
   return (
     <>
@@ -46,7 +49,7 @@ function Profile() {
           </div>
           <div className="profileRightBottom">
             <Feed />
-            <RightBar profile />
+            <RightBar user={user} />
           </div>
         </div>
       </div>
