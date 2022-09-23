@@ -8,6 +8,7 @@ import { Users } from "../../DummyData";
 
 export default function Rightbar({ user }) {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  useEffect(() => window.scroll(0, 0), []);
 
   const HomeRightbar = () => {
     return (

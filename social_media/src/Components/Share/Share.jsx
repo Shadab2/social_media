@@ -1,4 +1,10 @@
-import { EmojiEmotions, Label, PermMedia, Room } from "@material-ui/icons";
+import {
+  Cancel,
+  EmojiEmotions,
+  Label,
+  PermMedia,
+  Room,
+} from "@material-ui/icons";
 import axios from "axios";
 import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
@@ -7,7 +13,7 @@ import "./Share.css";
 function Share() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const { user } = useContext(AuthContext);
-  const [file, setfile] = useState(null);
+  const [file, setFile] = useState(null);
   const desc = useRef();
 
   const submitHandler = async (e) => {
@@ -50,6 +56,12 @@ function Share() {
           />
         </div>
         <hr className="shareHr" />
+        {file && (
+          <div className="shareImgContainer">
+            <img className="shareImg" src={URL.createObjectURL(file)} alt="" />
+            <Cancel className="shareCancelImg" onClick={() => setFile(null)} />
+          </div>
+        )}
         <form className="shareBottom" onSubmit={submitHandler}>
           <div className="shareOptions">
             <label htmlFor="file" className="shareOption">
@@ -59,7 +71,7 @@ function Share() {
                 accept=".png,.jpeg,.jpg"
                 id="file"
                 style={{ display: "none" }}
-                onChange={(e) => setfile(e.target.files[0])}
+                onChange={(e) => setFile(e.target.files[0])}
               />
               <span className="shareOptionText">Photo/Video</span>
             </label>

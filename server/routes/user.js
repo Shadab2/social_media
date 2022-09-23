@@ -1,9 +1,9 @@
 const User = require("../model/user");
-const bycrpt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const router = require("express").Router();
 
 //get a user
-router.get("/:id", async (req, res) => {
+router.get("/profile/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json("No such user");
@@ -18,8 +18,8 @@ router.put("/:id", async (req, res) => {
   if (req.body.userId == req.params.id || req.isAdmin) {
     if (req.body.password) {
       try {
-        const salt = await bycrpt.genSalt(10);
-        req.body.password = await bycrpt.hash(req.body.password, salt);
+        const salt = await bcrypt.genSalt(10);
+        req.body.password = await bcrypt.hash(req.body.password, salt);
       } catch (e) {
         req.status(500).send();
         console.log(e);
@@ -52,6 +52,27 @@ router.delete("/:id", async (req, res) => {
     }
   } else {
     res.status(403).json("You can modify only your account");
+  }
+});
+
+//get freinds
+router.get("/freinds/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const freinds = await Promise.all(
+      user.following.map((freindId) => {
+        return User.findById(freindId);
+      })
+    );
+    const freindList = freinds.map(({ _id, username, profilePicture }) => ({
+      _id,
+      username,
+      profilePicture,
+    }));
+    res.status(200).send(freindList);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e);
   }
 });
 

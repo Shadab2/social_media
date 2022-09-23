@@ -3,17 +3,12 @@ import Login from "./Pages/Login/Login";
 import Profile from "./Pages/Profile/Profile";
 import Register from "./Pages/Register/Register";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
-  const { user, dispatch } = useContext(AuthContext);
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    if (!loggedInUser) return;
-    dispatch({ type: "LOGIN_SUCCESS", payload: JSON.parse(loggedInUser) });
-  }, []);
+  const { user } = useContext(AuthContext);
   return (
     <div className="App">
       <Routes>
