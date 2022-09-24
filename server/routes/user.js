@@ -1,18 +1,23 @@
 const User = require("../model/user");
+const Post = require("../model/post");
 const bcrypt = require("bcrypt");
 const router = require("express").Router();
 
 //get a user
-router.get("/profile/:id", async (req, res) => {
+router.get("/", async (req, res) => {
+  const userId = req.query.userId;
+  const username = req.query.username;
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json("No such user");
-    res.status(200).json(user);
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({});
+    const user = userId
+      ? await User.findById(userId)
+      : await User.findOne({ username: username });
+    const { password, updatedAt, ...other } = user._doc;
+    res.status(200).json(other);
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
+
 //update user
 router.put("/:id", async (req, res) => {
   if (req.body.userId == req.params.id || req.isAdmin) {
@@ -88,11 +93,11 @@ router.put("/follow/:id", async (req, res) => {
         .status(404)
         .send("Current user or User to follow doesn't exist");
     if (currentUser.following.includes(userToFollow._id))
-      return res.status(403).json("User already followed");
+      return res.status(300).json("User already followed");
 
     await currentUser.updateOne({ $push: { following: req.params.id } });
     await userToFollow.updateOne({ $push: { followers: req.body.userId } });
-    res.status(400).json("Successfuly followed");
+    res.status(200).json("Successfuly followed");
   } catch (e) {
     console.log(e);
     res.status(500).json({});
@@ -106,19 +111,32 @@ router.put("/unfollow/:id", async (req, res) => {
   try {
     const userToFollow = await User.findById(req.params.id);
     const currentUser = await User.findById(req.body.userId);
-    if (!currentUser || !userToFollow)
-      return res
-        .status(404)
-        .send("Current user or User to unfollow doesn't exist");
+    if (!currentUser || !userToFollow) {
+      res.status(404).send("Current user or User to unfollow doesn't exist");
+      return;
+    }
     if (!currentUser.following.includes(userToFollow._id))
-      return res.status(403).json("You don't follow this user");
+      return res.status(300).json("You don't follow this user");
 
     await currentUser.updateOne({ $pull: { following: req.params.id } });
     await userToFollow.updateOne({ $pull: { followers: req.body.userId } });
-    res.status(400).json("Successfuly Unfollowed");
+    res.status(200).json("Successfuly Unfollowed");
   } catch (e) {
     console.log(e);
     res.status(500).json({});
+  }
+});
+
+router.post("/upload/profile", async (req, res) => {
+  try {
+    const user = await User.findById(req.body.id);
+    if (user) {
+      await user.updateOne({ profilePicture: req.body.profilePicture });
+      return res.status(200).json("file sucessfully added");
+    }
+    return res.status(404).json("No such user");
+  } catch (e) {
+    res.status(404).json({});
   }
 });
 

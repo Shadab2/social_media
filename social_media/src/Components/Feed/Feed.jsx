@@ -1,34 +1,51 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import "./Feed.css";
 import Post from "../Post/Post";
 import Share from "../Share/Share";
 import axios from "axios";
-import "./Feed.css";
 import { AuthContext } from "../../Context/AuthContext";
+import { NoEncryptionTwoTone } from "@material-ui/icons";
 
-function Feed() {
-  const [Posts, setPosts] = useState([]);
+export default function Feed({ username }) {
+  const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
+
   useEffect(() => {
     const fetchPosts = async () => {
-      try {
-        const res = await axios.get(`/posts/timeline/all/${user._id}`);
-        setPosts(res.data);
-      } catch (e) {
-        console.log(e);
-      }
+      const res = username
+        ? await axios.get("/posts/profile/" + username)
+        : await axios.get("/posts/timeline/all/" + user._id);
+      setPosts(
+        res.data.sort((p1, p2) => {
+          return new Date(p2.createdAt) - new Date(p1.createdAt);
+        })
+      );
     };
     fetchPosts();
-  }, [user._id]);
+  }, [username, user._id]);
+
   return (
     <div className="feed">
       <div className="feedWrapper">
-        <Share />
-        {Posts.map((item) => {
-          return <Post key={item._id} post={item} />;
-        })}
+        {(!username || username === user.username) && <Share />}
+        {posts.map((p) => (
+          <Post key={p._id} post={p} />
+        ))}
+        {posts.length === 0 && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "40px",
+            }}
+          >
+            <NoEncryptionTwoTone />
+            <p>No Posts yet..</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-export default Feed;
