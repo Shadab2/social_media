@@ -32,6 +32,7 @@
   border-radius: 30px;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .searchIcon {
@@ -46,6 +47,32 @@
 
 .searchInput:focus {
   outline: none;
+}
+.searchbar-people {
+  position: absolute;
+  height: 150px;
+  width: 85%;
+  padding: 20px;
+  top: 130%;
+  left: 4%;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  background: white;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.searchbar-people-list {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 300;
+  color: grey;
+  letter-spacing: 0.3px;
 }
 
 .topbarRight {

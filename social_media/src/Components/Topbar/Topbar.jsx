@@ -1,8 +1,9 @@
 import "./Topbar.css";
 import { Search, Person, Chat, Notifications } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import axios from "axios";
 
 export default function Topbar() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -15,13 +16,7 @@ export default function Topbar() {
         </Link>
       </div>
       <div className="topbarCenter">
-        <div className="searchbar">
-          <Search className="searchIcon" />
-          <input
-            placeholder="Search for friend, post or video"
-            className="searchInput"
-          />
-        </div>
+        <SearchBar PF={PF} />
       </div>
       <div className="topbarRight">
         <div className="topbarLinks">
@@ -56,3 +51,58 @@ export default function Topbar() {
     </div>
   );
 }
+
+const SearchBar = ({ PF }) => {
+  const [value, setValue] = useState("");
+  const [people, setPeople] = useState([]);
+  const navigate = useNavigate();
+
+  const searchPeople = async () => {
+    if (value.length <= 3) return;
+    try {
+      setTimeout(async () => {
+        const res = await axios.get(`/users/search?name=${value}`);
+        setPeople(res.data);
+      }, 1000);
+    } catch (e) {}
+  };
+
+  const handleClick = (user) => {
+    setPeople([]);
+    navigate(`/profile/${user.username}`);
+  };
+
+  return (
+    <div className="searchbar">
+      <Search className="searchIcon" />
+      <input
+        placeholder="Search for friend, post or video"
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+          searchPeople();
+        }}
+        className="searchInput"
+      />
+      {people.length > 0 && (
+        <div className="searchbar-people">
+          {people.map((user) => {
+            return (
+              <li
+                className="searchbar-people-list"
+                onClick={() => handleClick(user)}
+              >
+                <img
+                  src={user.profilePicture || `${PF}/person/noAvatar.png`}
+                  alt=""
+                  className="topbarImg"
+                />
+                <p>{user.username}</p>
+              </li>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};

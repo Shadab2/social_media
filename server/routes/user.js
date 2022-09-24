@@ -140,4 +140,17 @@ router.post("/upload/profile", async (req, res) => {
   }
 });
 
+router.get("/search", async (req, res) => {
+  try {
+    const allUsers = await User.find({});
+    const { name } = req.query;
+    const users = allUsers.filter((user) =>
+      user.username.toLowerCase().includes(name.toLowerCase())
+    );
+    res.status(200).json(users);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;
