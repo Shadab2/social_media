@@ -3,6 +3,8 @@ const app = express();
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
+const conversationRoute = require("./routes/conversation");
+const messageRoute = require("./routes/message");
 const path = require("path");
 
 const mongoose = require("mongoose");
@@ -47,6 +49,8 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
+app.use("/api/conversation", conversationRoute);
+app.use("/api/message", messageRoute);
 
 //store files in the server itself
 const storage = multer.diskStorage({
