@@ -49,7 +49,7 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
-app.use("/api/conversation", conversationRoute);
+app.use("/api/conversations", conversationRoute);
 app.use("/api/message", messageRoute);
 
 //store files in the server itself
