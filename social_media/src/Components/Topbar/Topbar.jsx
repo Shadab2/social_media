@@ -91,6 +91,7 @@ const SearchBar = ({ PF }) => {
               <li
                 className="searchbar-people-list"
                 onClick={() => handleClick(user)}
+                key={user._id}
               >
                 <img
                   src={user.profilePicture || `${PF}/person/noAvatar.png`}
